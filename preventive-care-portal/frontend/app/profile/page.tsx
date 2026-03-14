@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { UserCircle, Activity, Heart, Shield, Save, Check, Trash2 } from 'lucide-react';
-import axios from 'axios';
+import api from '../../services/api';
 
 export default function Profile() {
   const router = useRouter();
@@ -23,9 +23,7 @@ export default function Profile() {
       }
 
       try {
-        const { data } = await axios.get('http://localhost:5000/api/profile', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const { data } = await api.get('/profile');
         setProfile(data);
         setLoading(false);
       } catch (err) {
@@ -43,13 +41,11 @@ export default function Profile() {
     const token = localStorage.getItem('token');
     
     try {
-      const { data } = await axios.put('http://localhost:5000/api/profile', {
+      const { data } = await api.put('/profile', {
         age: profile.age,
         allergies: profile.allergies,
         medications: profile.medications,
         conditions: profile.conditions
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
       setProfile(data);
       setSaving(false);
@@ -69,9 +65,7 @@ export default function Profile() {
     setDeleting(true);
     const token = localStorage.getItem('token');
     try {
-      await axios.delete('http://localhost:5000/api/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.delete('/profile');
       
       // Clear local storage and redirect
       localStorage.removeItem('token');

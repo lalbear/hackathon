@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { HeartPulse, UserCircle, LogOut, LayoutDashboard, Bell, BellRing } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../services/api';
 
 const getStatus = (reminder: any) => {
   const today = new Date(); today.setHours(0,0,0,0);
@@ -49,9 +49,7 @@ export default function Navbar() {
     if (!user || user.role === 'Provider') return;
     const token = localStorage.getItem('token');
     if (!token) return;
-    axios.get('http://localhost:5000/api/reminders', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(({ data }) => {
+    api.get('/reminders').then(({ data }) => {
       setReminders(data.filter((r: any) => r.status !== 'Completed'));
     }).catch(() => {});
   }, [isClient]);

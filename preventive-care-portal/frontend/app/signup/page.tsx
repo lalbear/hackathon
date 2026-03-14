@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
-import axios from 'axios';
+import api from '../../services/api';
 
 export default function Signup() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/signup', { 
+      const { data } = await api.post('/auth/signup', { 
         name, email, password, role 
       });
       localStorage.setItem('token', data.token);

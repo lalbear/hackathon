@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell, Plus, X, Clock, CalendarDays, Trash2, CheckCircle2, Activity
 } from 'lucide-react';
-import axios from 'axios';
+import api from '../../services/api';
 
 const CATEGORIES = [
   { label: 'Medicine',     emoji: '💊' },
@@ -58,9 +58,7 @@ export default function RemindersPage() {
 
   const fetchReminders = useCallback(async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/reminders', {
-        headers: { Authorization: `Bearer ${getToken()}` }
-      });
+      const { data } = await api.get('/reminders');
       setReminders(data);
     } catch (err) {
       console.error(err);
@@ -110,9 +108,9 @@ export default function RemindersPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await axios.post('http://localhost:5000/api/reminders', {
+      await api.post('/reminders', {
         title, description, category, date: dueDate, reminderTime
-      }, { headers: { Authorization: `Bearer ${getToken()}` } });
+      });
       setShowForm(false);
       setTitle(''); setDescription(''); setCategory('General'); setDueDate(''); setReminderTime('');
       fetchReminders();
@@ -124,16 +122,12 @@ export default function RemindersPage() {
   };
 
   const handleComplete = async (id: string) => {
-    await axios.put(`http://localhost:5000/api/reminders/${id}/complete`, {}, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    });
+    await api.put(`/reminders/${id}/complete`, {});
     fetchReminders();
   };
 
   const handleDelete = async (id: string) => {
-    await axios.delete(`http://localhost:5000/api/reminders/${id}`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    });
+    await api.delete(`/reminders/${id}`);
     fetchReminders();
   };
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Footprints, Droplets, Moon, Activity, BarChart3, TrendingUp, Bell, CheckCircle2, Settings } from 'lucide-react';
-import axios from 'axios';
+import api from '../../services/api';
 import GoalCard from '../../components/GoalCard';
 import ProgressChart from '../../components/ProgressChart';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
@@ -76,8 +76,8 @@ export default function Dashboard() {
   const fetchData = async (token: string) => {
     try {
       const [goalsRes, remindersRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/goals', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('http://localhost:5000/api/reminders', { headers: { Authorization: `Bearer ${token}` } })
+        api.get('/goals'),
+        api.get('/reminders')
       ]);
       setGoals(goalsRes.data);
       setReminders(remindersRes.data);
@@ -105,12 +105,10 @@ export default function Dashboard() {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/goals', payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post('/goals', payload);
       
       setShowAddForm(false);
-      fetchData(token!);
+      fetchData(localStorage.getItem('token')!);
       setSteps(''); setWater(''); setSleep('');
     } catch (err) {
       console.error('Failed to add goal', err);
@@ -118,12 +116,9 @@ export default function Dashboard() {
   };
 
   const completeReminder = async (id: string) => {
-    const token = localStorage.getItem('token');
     try {
-      await axios.put(`http://localhost:5000/api/reminders/${id}/complete`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchData(token!);
+      await api.put(`/reminders/${id}/complete`, {});
+      fetchData(localStorage.getItem('token')!);
     } catch (err) {
       console.error('Failed to complete reminder', err);
     }
