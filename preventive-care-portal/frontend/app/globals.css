@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F8FAFC; /* Soft Off White */
+  --foreground: #1e293b; /* Dark Slate for text */
+  --primary: #0F766E; /* Deep Teal */
+  --primary-foreground: #ffffff;
+  --secondary: #5EEAD4; /* Soft Mint */
+  --secondary-foreground: #042f2e;
+  --accent: #FB7185; /* Warm Coral */
+  --accent-foreground: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --border: #e2e8f0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  
+  --font-sans: "Inter", var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.auth-card {
+  @apply bg-card rounded-2xl shadow-xl border border-border overflow-hidden;
+}
+
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg rounded-2xl;
+}
