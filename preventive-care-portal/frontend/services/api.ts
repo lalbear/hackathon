@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-// Create a custom axios instance with default config
+// Helper to clean up the URL and avoid double slashes
+const getBaseURL = () => {
+  const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  // Remove trailing slash if present, then add /api
+  return `${base.replace(/\/$/, '')}/api`;
+};
+
 const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api`,
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
