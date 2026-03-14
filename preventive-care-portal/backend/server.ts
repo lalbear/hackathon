@@ -53,7 +53,7 @@ app.use('/api/provider', providerRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/reminders', reminderRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
 app.listen(PORT, '0.0.0.0' as any, () => {
   console.log(`Server running on port ${PORT}`);
