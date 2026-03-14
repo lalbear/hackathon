@@ -47,6 +47,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error: any) {
+    console.error('SIGNUP ERROR:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -69,6 +70,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error: any) {
+    console.error('LOGIN ERROR:', error);
     res.status(500).json({ message: error.message });
   }
 };
